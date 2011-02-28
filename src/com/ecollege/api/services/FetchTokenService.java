@@ -7,10 +7,10 @@ import com.ecollege.api.model.Token;
 
 public class FetchTokenService extends BaseService {
 
-	private GrantToken grantToken;
+	private String grantToken;
 	private Token result;
 	
-	public FetchTokenService(GrantToken grantToken)
+	public FetchTokenService(String grantToken)
 	{
 		this.grantToken = grantToken;
 	}
@@ -21,7 +21,7 @@ public class FetchTokenService extends BaseService {
 
 	@Override
 	public String getResource() {
-		return "/authorize/token?access_grant=" + encode(grantToken.getAccessToken());
+		return "/authorize/token?access_grant=" + encode(grantToken);
 	}
 	
 	@Override

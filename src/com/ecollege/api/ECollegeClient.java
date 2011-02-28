@@ -25,9 +25,13 @@ public class ECollegeClient {
 	private String clientId;
 	private String username;
 	private String password;
-	private GrantToken grantToken;
+	private String grantToken;
 	private Token token;
 	
+	public String getGrantToken() {
+		return grantToken;
+	}
+
 	public ECollegeClient(String clientString, String clientId)
 	{
 		this.clientString = clientString;
@@ -39,7 +43,7 @@ public class ECollegeClient {
 		this.password = password;
 	}
 	
-	public void setupAuthentication(GrantToken grantToken) {
+	public void setupAuthentication(String grantToken) {
 		this.grantToken = grantToken;
 	}
 	
@@ -52,7 +56,7 @@ public class ECollegeClient {
 			if (grantToken == null && username != null && password != null) {
 				FetchGrantService fgs = new FetchGrantService(username, password);				
 				executeService(fgs);
-				grantToken = fgs.getResult();
+				grantToken = fgs.getResult().getAccessToken();
 				username = null; //no need to store now
 				password = null;
 			}

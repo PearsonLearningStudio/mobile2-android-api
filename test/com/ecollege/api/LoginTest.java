@@ -33,7 +33,7 @@ public class LoginTest extends BaseTest {
 		client.executeService(fg);
 		assertNotNull(fg.getResult());
 		
-		FetchTokenService ft = new FetchTokenService(fg.getResult());
+		FetchTokenService ft = new FetchTokenService(fg.getResult().getAccessToken());
 		client.executeService(ft);
 		assertNotNull(ft.getResult());
 	}
@@ -53,7 +53,7 @@ public class LoginTest extends BaseTest {
 		client.executeService(fg);
 		assertNotNull(fg.getResult());
 		
-		client.setupAuthentication(fg.getResult());
+		client.setupAuthentication(fg.getResult().getAccessToken());
 		FetchMeService fm = new FetchMeService();
 		client.executeService(fm);
 		assertNotNull(fm.getResult());
