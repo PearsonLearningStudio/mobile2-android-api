@@ -11,7 +11,6 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.impl.client.DefaultHttpClient;
 
-import com.ecollege.api.model.GrantToken;
 import com.ecollege.api.model.Token;
 import com.ecollege.api.services.BaseService;
 import com.ecollege.api.services.FetchGrantService;

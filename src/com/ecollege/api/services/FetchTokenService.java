@@ -2,7 +2,6 @@ package com.ecollege.api.services;
 
 import org.apache.http.HttpResponse;
 
-import com.ecollege.api.model.GrantToken;
 import com.ecollege.api.model.Token;
 
 public class FetchTokenService extends BaseService {
