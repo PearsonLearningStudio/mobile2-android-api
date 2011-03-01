@@ -91,7 +91,7 @@ public abstract class BaseService {
 	        if (path != null) {
 	        	
 	        	if (path.contains(".")) {
-		        	String pathParts[] = path.split(".");
+		        	String pathParts[] = path.split("\\.");
 		        	for (String pathPart : pathParts) {
 		        		rootNode = rootNode.get(pathPart);
 		        	}
