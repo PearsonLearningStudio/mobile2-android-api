@@ -6,7 +6,7 @@ import java.io.Serializable;
 public class ActivityStreamObject implements Serializable {
 
 	private long courseId;
-	private long referenceId;
+	private String referenceId;
 	private String id;
 	private String summary;
 	private String objectType;
@@ -17,10 +17,10 @@ public class ActivityStreamObject implements Serializable {
 	public void setCourseId(long courseId) {
 		this.courseId = courseId;
 	}
-	public long getReferenceId() {
+	public String getReferenceId() {
 		return referenceId;
 	}
-	public void setReferenceId(long referenceId) {
+	public void setReferenceId(String referenceId) {
 		this.referenceId = referenceId;
 	}
 	public String getId() {
