@@ -1,6 +1,7 @@
 package com.ecollege.api.model;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 
 @SuppressWarnings("serial")
 public class ActivityStreamObject implements Serializable {
@@ -10,6 +11,8 @@ public class ActivityStreamObject implements Serializable {
 	private String id;
 	private String summary;
 	private String objectType;
+	private String letterGrade; //on grades
+	private BigDecimal pointsAchieved; //on grades
 	
 	public long getCourseId() {
 		return courseId;
@@ -41,4 +44,17 @@ public class ActivityStreamObject implements Serializable {
 	public void setObjectType(String objectType) {
 		this.objectType = objectType;
 	}
+	public String getLetterGrade() {
+		return letterGrade;
+	}
+	public void setLetterGrade(String letterGrade) {
+		this.letterGrade = letterGrade;
+	}
+	public BigDecimal getPointsAchieved() {
+		return pointsAchieved;
+	}
+	public void setPointsAchieved(BigDecimal pointsAchieved) {
+		this.pointsAchieved = pointsAchieved;
+	}
+	
 }
