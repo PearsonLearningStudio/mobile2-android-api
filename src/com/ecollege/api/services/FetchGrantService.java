@@ -1,6 +1,7 @@
 package com.ecollege.api.services;
 
 import java.util.HashMap;
+import java.util.logging.Logger;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpPost;
@@ -10,6 +11,7 @@ import com.ecollege.api.model.GrantToken;
 
 public class FetchGrantService extends BaseService {
 
+	private static Logger l = Logger.getLogger(FetchGrantService.class.getName());
 	private String username;
 	private String password;
 	
@@ -59,7 +61,7 @@ public class FetchGrantService extends BaseService {
 	public void processResponse(HttpResponse response, String responseContent) {
 		super.processResponse(response,responseContent);
 		result = parseContentAsJson(responseContent, GrantToken.class);
-		System.out.println("Result is " + result);
+		l.finest("Result is " + result);
 	}
 	
 	

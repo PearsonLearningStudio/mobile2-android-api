@@ -1,5 +1,7 @@
 package com.ecollege.api.services.grades;
 
+import java.util.logging.Logger;
+
 import org.apache.http.HttpResponse;
 
 import com.ecollege.api.model.Grade;
@@ -7,6 +9,7 @@ import com.ecollege.api.services.BaseService;
 
 public class FetchMyGradebookItemGrade extends BaseService {
 
+	private static Logger l = Logger.getLogger(FetchMyGradebookItemGrade.class.getName());
 	private long courseId;
 	private String gradebookItemGuid;
 
@@ -30,7 +33,7 @@ public class FetchMyGradebookItemGrade extends BaseService {
 	public void processResponse(HttpResponse response, String responseContent) {
 		super.processResponse(response,responseContent);
 		result = parseContentAsJson(responseContent,"grade", Grade.class);
-		System.out.println("Result is " + result);
+		l.finest("Result is " + result);
 	}
 	
 }

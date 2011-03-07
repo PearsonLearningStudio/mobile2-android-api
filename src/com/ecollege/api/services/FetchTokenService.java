@@ -1,11 +1,14 @@
 package com.ecollege.api.services;
 
+import java.util.logging.Logger;
+
 import org.apache.http.HttpResponse;
 
 import com.ecollege.api.model.Token;
 
 public class FetchTokenService extends BaseService {
 
+	private static Logger l = Logger.getLogger(FetchTokenService.class.getName());
 	private String grantToken;
 	private Token result;
 	
@@ -32,7 +35,7 @@ public class FetchTokenService extends BaseService {
 	public void processResponse(HttpResponse response, String responseContent) {
 		super.processResponse(response,responseContent);
 		result = parseContentAsJson(responseContent, Token.class);
-		System.out.println("Result is " + result);
+		l.finest("Result is " + result);
 	}
 	
 }

@@ -1,6 +1,7 @@
 package com.ecollege.api.services.grades;
 
 import java.util.List;
+import java.util.logging.Logger;
 
 import org.apache.http.HttpResponse;
 
@@ -9,6 +10,7 @@ import com.ecollege.api.services.BaseService;
 
 public class FetchGradebookItemByGuid extends BaseService {
 
+	private static Logger l = Logger.getLogger(FetchGradebookItemByGuid.class.getName());
 	private long courseId;
 	private String gradebookItemGuid;
 
@@ -33,7 +35,7 @@ public class FetchGradebookItemByGuid extends BaseService {
 		super.processResponse(response,responseContent);
 		List<GradebookItem> rawResult = parseContentAsJsonArray(responseContent,"gradebookItems", GradebookItem.class);
 		result = rawResult.get(0);
-		System.out.println("Result is " + result);
+		l.finest("Result is " + result);
 	}
 	
 }

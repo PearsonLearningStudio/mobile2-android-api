@@ -6,6 +6,7 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -17,6 +18,7 @@ import com.ecollege.api.services.users.FetchMeService;
 
 public class DiscussionsTest extends BaseTest {
 
+	private static Logger l = Logger.getLogger(DiscussionsTest.class.getName());
 	protected ECollegeClient client;
 	
 	@Before
@@ -33,7 +35,7 @@ public class DiscussionsTest extends BaseTest {
 		client.executeService(fm);
 		assertNotNull(fm.getResult());
 		
-		System.out.println("Current user id is " + fm.getResult().getId());
+		l.finest("Current user id is " + fm.getResult().getId());
 		
 		FetchMyCoursesService fmc = new FetchMyCoursesService();
 		client.executeService(fmc);
@@ -45,7 +47,7 @@ public class DiscussionsTest extends BaseTest {
 		FetchDiscussionTopicsForCourseIds fetcht = new FetchDiscussionTopicsForCourseIds(courseIds);
 		client.executeService(fetcht);
 		
-		System.out.println(fetcht.getResult().size());
+		l.finest("FetchTopicsForCourse size: " + fetcht.getResult().size());
 		
 	}
 	

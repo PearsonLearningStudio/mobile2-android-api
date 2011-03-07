@@ -3,6 +3,7 @@ package com.ecollege.api.services.activities;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
+import java.util.logging.Logger;
 
 import org.apache.http.HttpResponse;
 
@@ -11,6 +12,7 @@ import com.ecollege.api.services.BaseService;
 
 public class FetchMyWhatsHappeningFeed extends BaseService {
 
+	private static Logger l = Logger.getLogger(FetchMyWhatsHappeningFeed.class.getName());
 	private Calendar since;
 	
 	public FetchMyWhatsHappeningFeed() {
@@ -43,7 +45,7 @@ public class FetchMyWhatsHappeningFeed extends BaseService {
 	public void processResponse(HttpResponse response, String responseContent) {
 		super.processResponse(response,responseContent);
 		result = parseContentAsJsonArray(responseContent,"activityStream.items", ActivityStreamItem.class);
-		System.out.println("Result is " + result);
+		l.finest("Result is " + result);
 	}
 	
 }

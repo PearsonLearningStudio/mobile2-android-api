@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URI;
+import java.util.logging.Logger;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -18,6 +19,7 @@ import com.ecollege.api.services.FetchTokenService;
 
 public class ECollegeClient {
 
+	private static Logger l = Logger.getLogger(ECollegeClient.class.getName());
 	public static final String ROOT_URI = "https://m-api.ecollege.com";
 	
 	private String clientString;
@@ -75,13 +77,13 @@ public class ECollegeClient {
 		
 		String url = ROOT_URI + service.getResource();
 		request.setURI(new URI(url));		
-		System.out.println("Request is: " + url);
+		l.info("Request is: " + url);
 		service.prepareRequest(request,clientString,clientId);
 
 		HttpResponse response = httpclient.execute(request);
 		String responseContent = parseResponseContent(response);
-		System.out.println("Response Status is: " + response.getStatusLine());
-		System.out.println("Response Content is:\n " + responseContent);
+		l.info("Response Status is: " + response.getStatusLine());
+		l.finest("Response Content is:\n " + responseContent);
 		service.processResponse(response,responseContent);
 	}
 	

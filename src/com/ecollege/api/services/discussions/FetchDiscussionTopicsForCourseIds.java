@@ -1,6 +1,7 @@
 package com.ecollege.api.services.discussions;
 
 import java.util.List;
+import java.util.logging.Logger;
 
 import org.apache.http.HttpResponse;
 
@@ -9,6 +10,7 @@ import com.ecollege.api.services.BaseService;
 
 public class FetchDiscussionTopicsForCourseIds extends BaseService {
 
+	private static Logger l = Logger.getLogger(FetchDiscussionTopicsForCourseIds.class.getName());
 	private List<String> courseIds;
 	
 	public FetchDiscussionTopicsForCourseIds(List<String> courseIds) {
@@ -33,7 +35,7 @@ public class FetchDiscussionTopicsForCourseIds extends BaseService {
 	public void processResponse(HttpResponse response, String responseContent) {
 		super.processResponse(response,responseContent);
 		result = parseContentAsJsonArray(responseContent,"userTopics", UserDiscussionTopic.class);
-		System.out.println("Result is " + result);
+		l.finest("Result is " + result);
 	}
 	
 }

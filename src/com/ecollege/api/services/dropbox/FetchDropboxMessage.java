@@ -1,6 +1,7 @@
 package com.ecollege.api.services.dropbox;
 
 import java.util.List;
+import java.util.logging.Logger;
 
 import org.apache.http.HttpResponse;
 
@@ -9,6 +10,7 @@ import com.ecollege.api.services.BaseService;
 
 public class FetchDropboxMessage extends BaseService {
 
+	private static Logger l = Logger.getLogger(FetchDropboxMessage.class.getName());
 	private long courseId;
 	private long basketId;
 	private long messageId;
@@ -35,7 +37,7 @@ public class FetchDropboxMessage extends BaseService {
 		super.processResponse(response,responseContent);
 		List<DropboxMessage> rawResult = parseContentAsJsonArray(responseContent,"messages", DropboxMessage.class);
 		result = rawResult.get(0);
-		System.out.println("Result is " + result);
+		l.finest("Result is " + result);
 	}
 	
 }
