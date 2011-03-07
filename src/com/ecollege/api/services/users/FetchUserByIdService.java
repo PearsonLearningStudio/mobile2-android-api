@@ -3,8 +3,6 @@ package com.ecollege.api.services.users;
 import java.util.List;
 import java.util.logging.Logger;
 
-import org.apache.http.HttpResponse;
-
 import com.ecollege.api.model.User;
 import com.ecollege.api.services.BaseService;
 
@@ -28,8 +26,8 @@ public class FetchUserByIdService extends BaseService {
 	}
 
 	@Override
-	public void processResponse(HttpResponse response, String responseContent) {
-		super.processResponse(response,responseContent);
+	public void processResponse(String responseContent) {
+		super.processResponse(responseContent);
 		List<User> rawResult = parseContentAsJsonArray(responseContent,"users", User.class);
 		if (rawResult.size() > 0) result = rawResult.get(0);
 		l.finest("Result is " + result);

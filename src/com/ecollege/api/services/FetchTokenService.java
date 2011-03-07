@@ -2,8 +2,6 @@ package com.ecollege.api.services;
 
 import java.util.logging.Logger;
 
-import org.apache.http.HttpResponse;
-
 import com.ecollege.api.model.Token;
 
 public class FetchTokenService extends BaseService {
@@ -32,8 +30,8 @@ public class FetchTokenService extends BaseService {
 	}
 
 	@Override
-	public void processResponse(HttpResponse response, String responseContent) {
-		super.processResponse(response,responseContent);
+	public void processResponse(String responseContent) {
+		super.processResponse(responseContent);
 		result = parseContentAsJson(responseContent, Token.class);
 		l.finest("Result is " + result);
 	}

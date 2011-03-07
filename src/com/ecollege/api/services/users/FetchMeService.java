@@ -2,8 +2,6 @@ package com.ecollege.api.services.users;
 
 import java.util.logging.Logger;
 
-import org.apache.http.HttpResponse;
-
 import com.ecollege.api.model.User;
 import com.ecollege.api.services.BaseService;
 
@@ -22,8 +20,8 @@ public class FetchMeService extends BaseService {
 	}
 
 	@Override
-	public void processResponse(HttpResponse response, String responseContent) {
-		super.processResponse(response,responseContent);
+	public void processResponse(String responseContent) {
+		super.processResponse(responseContent);
 		result = parseContentAsJson(responseContent,"me", User.class);
 		l.finest("Result is " + result);
 	}

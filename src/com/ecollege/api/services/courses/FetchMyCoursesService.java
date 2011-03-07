@@ -3,8 +3,6 @@ package com.ecollege.api.services.courses;
 import java.util.List;
 import java.util.logging.Logger;
 
-import org.apache.http.HttpResponse;
-
 import com.ecollege.api.model.Course;
 import com.ecollege.api.services.BaseService;
 
@@ -23,8 +21,8 @@ public class FetchMyCoursesService extends BaseService {
 	}
 
 	@Override
-	public void processResponse(HttpResponse response, String responseContent) {
-		super.processResponse(response,responseContent);
+	public void processResponse(String responseContent) {
+		super.processResponse(responseContent);
 		result = parseContentAsJsonArray(responseContent,"currentCourses", Course.class);
 		l.finest("Result is " + result);
 	}

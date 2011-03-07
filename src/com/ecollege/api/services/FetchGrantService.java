@@ -3,7 +3,6 @@ package com.ecollege.api.services;
 import java.util.HashMap;
 import java.util.logging.Logger;
 
-import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpRequestBase;
 
@@ -58,8 +57,8 @@ public class FetchGrantService extends BaseService {
 
 
 	@Override
-	public void processResponse(HttpResponse response, String responseContent) {
-		super.processResponse(response,responseContent);
+	public void processResponse(String responseContent) {
+		super.processResponse(responseContent);
 		result = parseContentAsJson(responseContent, GrantToken.class);
 		l.finest("Result is " + result);
 	}

@@ -9,7 +9,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpEntityEnclosingRequestBase;
@@ -55,7 +54,7 @@ public abstract class BaseService {
 		request.setEntity(new UrlEncodedFormEntity(nvps, HTTP.UTF_8));
 	}
 
-	public void processResponse(HttpResponse response, String responseContent) {
+	public void processResponse(String responseContent) {
 		//override in subclass
 	}
 	

@@ -3,8 +3,6 @@ package com.ecollege.api.services.discussions;
 import java.util.List;
 import java.util.logging.Logger;
 
-import org.apache.http.HttpResponse;
-
 import com.ecollege.api.model.UserDiscussionResponse;
 import com.ecollege.api.services.BaseService;
 
@@ -33,8 +31,8 @@ public class FetchDiscussionResponseById extends BaseService {
 	}
 
 	@Override
-	public void processResponse(HttpResponse response, String responseContent) {
-		super.processResponse(response,responseContent);
+	public void processResponse(String responseContent) {
+		super.processResponse(responseContent);
 		List<UserDiscussionResponse> rawResult = parseContentAsJsonArray(responseContent,"userResponses", UserDiscussionResponse.class);
 		result = rawResult.get(0);
 		l.finest("Result is " + result);
