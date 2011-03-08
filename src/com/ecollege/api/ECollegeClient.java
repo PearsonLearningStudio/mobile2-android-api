@@ -59,9 +59,10 @@ public class ECollegeClient {
 		
 		HttpProtocolParams.setUserAgent(httpclient.getParams(), userAgent);
 		HttpProtocolParams.setContentCharset(httpclient.getParams(), "UTF-8");
-		HttpProtocolParams.setHttpElementCharset(httpclient.getParams(), "UTF-8");		
+		HttpProtocolParams.setHttpElementCharset(httpclient.getParams(), "UTF-8");	
 		
 		HttpRequestBase request = service.getRequestClass().newInstance(); //HttpGet, HttpPost, etc
+		request.addHeader("Accept-Encoding", "gzip");
 		
 		if (service.isAuthenticationRequired()) {
 			prepareAuthenticationHeaders(request);

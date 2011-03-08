@@ -19,6 +19,5 @@ public class ECollegeHttpResponse {
 	public void setResponseContent(String responseContent) {
 		this.responseContent = responseContent;
 	}
-
 	
 }
