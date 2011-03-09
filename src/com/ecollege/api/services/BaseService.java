@@ -2,6 +2,7 @@ package com.ecollege.api.services;
 
 import static org.codehaus.jackson.map.DeserializationConfig.Feature.FAIL_ON_UNKNOWN_PROPERTIES;
 
+import java.io.IOException;
 import java.io.Serializable;
 import java.math.BigInteger;
 import java.net.URLEncoder;
@@ -19,9 +20,16 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.protocol.HTTP;
+import org.codehaus.jackson.JsonFactory;
 import org.codehaus.jackson.JsonNode;
+import org.codehaus.jackson.JsonParseException;
+import org.codehaus.jackson.JsonParser;
+import org.codehaus.jackson.JsonToken;
+import org.codehaus.jackson.map.MappingJsonFactory;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.node.ArrayNode;
+
+import com.ecollege.api.exceptions.DeserializationException;
 
 public abstract class BaseService {
 	
@@ -86,11 +94,19 @@ public abstract class BaseService {
 	
 	protected <T extends Serializable> T parseContentAsJson(String json, String path, Class<T> responseType) {
 		try {
-	        ObjectMapper mapper = createMapper();
-			JsonNode rootNode = findRootNode(json,path);
-            return mapper.treeToValue(rootNode, responseType);
+	        JsonParser jp = moveToPath(json, path);
+	        if (jp != null) {
+	        	
+	        	if (jp.getCurrentToken() == JsonToken.START_OBJECT) {
+		        	T result = jp.readValueAs(responseType);
+		        	return result;
+	        	} else {
+	        		throw new DeserializationException("Path " + path + " is not an object");
+	        	}
+	        	
+	        }
 		} catch (Exception e){
-			e.printStackTrace();
+			throw new DeserializationException(e);
 		}
 		return null;
 	}
@@ -107,29 +123,70 @@ public abstract class BaseService {
         return mapper;
 	}
 	
-	private JsonNode findRootNode(String json, String path) {
+	private JsonParser moveToPath(String json, String path) {
 		try {
-	        ObjectMapper mapper = createMapper();
-	        JsonNode rootNode = mapper.readValue(json, JsonNode.class);
-	        
-	        if (path != null) {
-	        	
-	        	if (path.contains(".")) {
-		        	String pathParts[] = path.split("\\.");
-		        	for (String pathPart : pathParts) {
-		        		rootNode = rootNode.get(pathPart);
-		        	}
-	        	} else {
-	        		rootNode = rootNode.get(path);
-	        	}
-	        }
-	        
-	        return rootNode;
+			JsonFactory f = new MappingJsonFactory(createMapper());
+			JsonParser jp = f.createJsonParser(json);
+			
+			jp.nextToken(); //go to start_object
+			
+			if (path == null) return jp;
+			String pathParts[];
+			
+        	if (path.contains(".")) {
+	        	pathParts = path.split("\\.");
+        	} else {
+        		pathParts = new String[]{path};
+        	}
+        	for (String pathPart : pathParts) {
+        		boolean foundPart = findField(jp, pathPart); 
+        		if (!foundPart) throw new DeserializationException("Cannot find path " + path);
+        	}
+
+        	jp.nextToken(); //move into object or array
+        	return jp;
 		} catch (Exception e) {
-			e.printStackTrace();
+			throw new DeserializationException(e);
 		}
-		return null;
 	}
+	
+	private boolean findField(JsonParser jp, String field) {
+		try {
+			while (jp.nextToken() != JsonToken.END_OBJECT) {
+				if (jp.getCurrentName().equalsIgnoreCase(field)) {
+					return true;
+				}
+			}
+		} catch (Exception e) {
+			throw new DeserializationException(e);
+		}
+		return false;
+	}
+	
+//	private JsonNode findRootNode(String json, String path) {
+//		try {
+//
+//	        ObjectMapper mapper = createMapper();
+//	        JsonNode rootNode = mapper.readValue(json, JsonNode.class);
+//	        
+//	        if (path != null) {
+//	        	
+//	        	if (path.contains(".")) {
+//		        	String pathParts[] = path.split("\\.");
+//		        	for (String pathPart : pathParts) {
+//		        		rootNode = rootNode.get(pathPart);
+//		        	}
+//	        	} else {
+//	        		rootNode = rootNode.get(path);
+//	        	}
+//	        }
+//	        
+//	        return rootNode;
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}
+//		return null;
+//	}
 	
 	protected <T extends Serializable> List<T> parseContentAsJsonArray(String json, Class<T> responseType) {
 		return parseContentAsJsonArray(json, null, responseType);
@@ -137,19 +194,20 @@ public abstract class BaseService {
 	
 	protected <T extends Serializable> List<T> parseContentAsJsonArray(String json, String path, Class<T> responseType) {
 		try {
-			List<T> result = new ArrayList<T>();
-	        ObjectMapper mapper = createMapper();
-			ArrayNode rootNode = (ArrayNode) findRootNode(json,path);
-			
-            Iterator<JsonNode> courseObjectIterator = rootNode.getElements();
-
-            while (courseObjectIterator.hasNext()) {
-                JsonNode childNode = courseObjectIterator.next();
-                result.add(mapper.treeToValue(childNode, responseType));
-            }
-            return result;
+	        JsonParser jp = moveToPath(json, path);
+	        
+	        if (jp != null) {
+				List<T> result = new ArrayList<T>();
+	        	if (jp.getCurrentToken() != JsonToken.START_ARRAY) {
+	        		throw new DeserializationException("path is not array: " + path);
+	        	}
+	        	while (jp.nextToken() != JsonToken.END_ARRAY) {
+	        		result.add(jp.readValueAs(responseType));
+	        	}
+	        	return result;
+	        }
 		} catch (Exception e){
-			e.printStackTrace();
+			throw new DeserializationException(e);
 		}
 		return null;
 	}
