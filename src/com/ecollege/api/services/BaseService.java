@@ -3,7 +3,10 @@ package com.ecollege.api.services;
 import static org.codehaus.jackson.map.DeserializationConfig.Feature.FAIL_ON_UNKNOWN_PROPERTIES;
 
 import java.io.Serializable;
+import java.math.BigInteger;
 import java.net.URLEncoder;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -31,6 +34,25 @@ public abstract class BaseService {
 	
 	public boolean isAuthenticationRequired() {
 		return true;
+	}
+	
+	public boolean isCacheable() {
+		return true;
+	}
+	
+	private static final String CACHE_VERSION = "0"; //change to invalidate existing caches
+	
+	public String getCacheKey() {
+		MessageDigest digest;
+		try {
+			digest = java.security.MessageDigest.getInstance("MD5");
+			digest.update(getResource().getBytes());
+			digest.update(getRequestClass().getSimpleName().getBytes());
+			digest.update(CACHE_VERSION.getBytes());
+			return new BigInteger(1,digest.digest()).toString(16);
+		} catch (NoSuchAlgorithmException e) {
+			throw new RuntimeException(e);
+		}
 	}
 	
 	// end settings
@@ -73,12 +95,15 @@ public abstract class BaseService {
 		return null;
 	}
 	
+	private static ObjectMapper mapper;
 	private ObjectMapper createMapper() {
-        ObjectMapper mapper = new ObjectMapper();
-        mapper.getDeserializationConfig().set(
-                FAIL_ON_UNKNOWN_PROPERTIES,
-                false
-                );
+		if (mapper == null) {
+	        mapper = new ObjectMapper();
+	        mapper.getDeserializationConfig().set(
+	                FAIL_ON_UNKNOWN_PROPERTIES,
+	                false
+	                );
+		}
         return mapper;
 	}
 	

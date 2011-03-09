@@ -39,7 +39,10 @@ public class FetchGrantService extends BaseService {
 	public boolean isAuthenticationRequired() {
 		return false;
 	}
-
+	@Override
+	public boolean isCacheable() {
+		return false;
+	}
 	@Override
 	public void prepareRequest(HttpRequestBase request, String clientString,
 			String clientId) throws Exception {

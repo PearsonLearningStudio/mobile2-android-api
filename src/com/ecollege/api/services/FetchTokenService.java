@@ -30,6 +30,11 @@ public class FetchTokenService extends BaseService {
 	}
 
 	@Override
+	public boolean isCacheable() {
+		return false;
+	}
+	
+	@Override
 	public void processResponse(String responseContent) {
 		super.processResponse(responseContent);
 		result = parseContentAsJson(responseContent, Token.class);

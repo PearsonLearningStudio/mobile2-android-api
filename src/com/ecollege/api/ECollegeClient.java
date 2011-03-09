@@ -55,44 +55,64 @@ public class ECollegeClient {
 	}
 	
 	public void executeService(BaseService service) throws Exception {
-		HttpClient httpclient = new DefaultHttpClient();
+		executeService(service,null);
+	}
+	
+	public void executeService(BaseService service, ECollegeHttpResponseCache cache) throws Exception {
 		
-		HttpProtocolParams.setUserAgent(httpclient.getParams(), userAgent);
-		HttpProtocolParams.setContentCharset(httpclient.getParams(), "UTF-8");
-		HttpProtocolParams.setHttpElementCharset(httpclient.getParams(), "UTF-8");	
+		String cacheKey = null;
+		String responseContent = null;
 		
-		HttpRequestBase request = service.getRequestClass().newInstance(); //HttpGet, HttpPost, etc
-		request.addHeader("Accept-Encoding", "gzip");
-		
-		if (service.isAuthenticationRequired()) {
-			prepareAuthenticationHeaders(request);
+		if (cache != null && service.isCacheable()) {
+			cacheKey = service.getCacheKey();
+			responseContent = cache.get(cacheKey);
 		}
 		
-		String url = ROOT_URI + service.getResource();
-		request.setURI(new URI(url));		
-		l.info("Request is: " + url);
-		service.prepareRequest(request,clientString,clientId);
-
-		ECollegeHttpResponse response = null;
-		
-		try {
-			response = httpclient.execute(request,responseHandler);
-		} catch (SocketException se) {
-			l.log(Level.WARNING,"socket exception", se);
-			// TODO it seems to be the case that timeouts always
-			// end up as a socket instead of socket timeout exception.
-			// Research this
-			throw new TimeoutException(se);
-		} catch (SocketTimeoutException stoe) {
-			l.log(Level.WARNING,"socket timeout exception", stoe);
-			throw new TimeoutException(stoe);			
-		} catch (IOException e) {
-			l.log(Level.WARNING,"unhandled io exception", e);
-			throw new ServiceException(e);
+		if (responseContent == null) {
+			HttpClient httpclient = new DefaultHttpClient();
+			
+			HttpProtocolParams.setUserAgent(httpclient.getParams(), userAgent);
+			HttpProtocolParams.setContentCharset(httpclient.getParams(), "UTF-8");
+			HttpProtocolParams.setHttpElementCharset(httpclient.getParams(), "UTF-8");	
+			
+			HttpRequestBase request = service.getRequestClass().newInstance(); //HttpGet, HttpPost, etc
+			request.addHeader("Accept-Encoding", "gzip");
+			
+			if (service.isAuthenticationRequired()) {
+				prepareAuthenticationHeaders(request);
+			}
+			
+			String url = ROOT_URI + service.getResource();
+			request.setURI(new URI(url));		
+			l.info("Request is: " + url);
+			service.prepareRequest(request,clientString,clientId);
+			
+			ECollegeHttpResponse response = null;
+			
+			try {
+				response = httpclient.execute(request,responseHandler);
+			} catch (SocketException se) {
+				l.log(Level.WARNING,"socket exception", se);
+				// TODO it seems to be the case that timeouts always
+				// end up as a socket instead of socket timeout exception.
+				// Research this
+				throw new TimeoutException(se);
+			} catch (SocketTimeoutException stoe) {
+				l.log(Level.WARNING,"socket timeout exception", stoe);
+				throw new TimeoutException(stoe);			
+			} catch (IOException e) {
+				l.log(Level.WARNING,"unhandled io exception", e);
+				throw new ServiceException(e);
+			}
+			
+			responseContent = response.getResponseContent();
+			if (cache != null && service.isCacheable()) {
+				cache.put(cacheKey, responseContent);
+			}
 		}
 		
 		try {
-			service.processResponse(response.getResponseContent());
+			service.processResponse(responseContent);
 		} catch (Exception e) {
 			throw new DeserializationException(e);
 		}

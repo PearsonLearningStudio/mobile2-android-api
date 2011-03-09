@@ -82,12 +82,16 @@ public class ECollegeHttpResponseHandler implements ResponseHandler<ECollegeHttp
 	}
 	
 	
-	protected String streamToString(InputStream instream, String charset) {
+	public static String streamToString(InputStream instream, String charset) {
 		StringWriter writer = new StringWriter();
 		BufferedReader br = null;
 		
 		try {
-			br = new BufferedReader(new InputStreamReader(instream,charset));
+			if (charset != null) {			
+				br = new BufferedReader(new InputStreamReader(instream,charset));
+			} else {
+				br = new BufferedReader(new InputStreamReader(instream));
+			}
 			
 			char[] buffer = new char[1024];
 			int n;
