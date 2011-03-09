@@ -2,14 +2,12 @@ package com.ecollege.api.services;
 
 import static org.codehaus.jackson.map.DeserializationConfig.Feature.FAIL_ON_UNKNOWN_PROPERTIES;
 
-import java.io.IOException;
 import java.io.Serializable;
 import java.math.BigInteger;
 import java.net.URLEncoder;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -21,13 +19,10 @@ import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.protocol.HTTP;
 import org.codehaus.jackson.JsonFactory;
-import org.codehaus.jackson.JsonNode;
-import org.codehaus.jackson.JsonParseException;
 import org.codehaus.jackson.JsonParser;
 import org.codehaus.jackson.JsonToken;
 import org.codehaus.jackson.map.MappingJsonFactory;
 import org.codehaus.jackson.map.ObjectMapper;
-import org.codehaus.jackson.node.ArrayNode;
 
 import com.ecollege.api.exceptions.DeserializationException;
 
@@ -37,7 +32,7 @@ public abstract class BaseService {
 	public Class<? extends HttpRequestBase> getRequestClass() {
 		return HttpGet.class;
 	}
-	
+
 	public abstract String getResource();	
 	
 	public boolean isAuthenticationRequired() {

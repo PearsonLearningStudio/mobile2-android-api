@@ -49,4 +49,13 @@ public class ActivityStreamItem implements Serializable {
 		this.target = target;
 	}
 	
+	
+
+	private Object tag;
+	public Object getTag() {
+		return tag;
+	}
+	public void setTag(Object tag) {
+		this.tag = tag;
+	}
 }
