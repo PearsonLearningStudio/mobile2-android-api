@@ -45,13 +45,14 @@ public abstract class BaseService {
 	
 	private static final String CACHE_VERSION = "0"; //change to invalidate existing caches
 	
-	public String getCacheKey() {
+	public String getCacheKey(String userInfo) {
 		MessageDigest digest;
 		try {
 			digest = java.security.MessageDigest.getInstance("MD5");
 			digest.update(getResource().getBytes());
 			digest.update(getRequestClass().getSimpleName().getBytes());
 			digest.update(CACHE_VERSION.getBytes());
+			digest.update(userInfo.getBytes());
 			return new BigInteger(1,digest.digest()).toString(16);
 		} catch (NoSuchAlgorithmException e) {
 			throw new RuntimeException(e);

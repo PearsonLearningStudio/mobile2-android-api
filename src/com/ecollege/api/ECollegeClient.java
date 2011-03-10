@@ -58,29 +58,29 @@ public class ECollegeClient {
 		executeService(service,null);
 	}
 	
-	public void executeService(BaseService service, ECollegeHttpResponseCache cache) throws Exception {
-		
+	public void executeService(BaseService service, ECollegeHttpResponseCache cache) throws Exception {		
 		String cacheKey = null;
 		String responseContent = null;
 		
-		if (cache != null && service.isCacheable()) {
-			cacheKey = service.getCacheKey();
-			responseContent = cache.get(cacheKey);
+		HttpClient httpclient = new DefaultHttpClient();
+		
+		HttpProtocolParams.setUserAgent(httpclient.getParams(), userAgent);
+		HttpProtocolParams.setContentCharset(httpclient.getParams(), "UTF-8");
+		HttpProtocolParams.setHttpElementCharset(httpclient.getParams(), "UTF-8");	
+		
+		HttpRequestBase request = service.getRequestClass().newInstance(); //HttpGet, HttpPost, etc
+		request.addHeader("Accept-Encoding", "gzip");
+		
+		if (service.isAuthenticationRequired()) {
+			prepareAuthenticationHeaders(request);
 		}
 		
+		if (cache != null && service.isCacheable()) {
+			cacheKey = service.getCacheKey(grantToken == null ? "" : grantToken);
+			responseContent = cache.get(cacheKey);
+		}			
+
 		if (responseContent == null) {
-			HttpClient httpclient = new DefaultHttpClient();
-			
-			HttpProtocolParams.setUserAgent(httpclient.getParams(), userAgent);
-			HttpProtocolParams.setContentCharset(httpclient.getParams(), "UTF-8");
-			HttpProtocolParams.setHttpElementCharset(httpclient.getParams(), "UTF-8");	
-			
-			HttpRequestBase request = service.getRequestClass().newInstance(); //HttpGet, HttpPost, etc
-			request.addHeader("Accept-Encoding", "gzip");
-			
-			if (service.isAuthenticationRequired()) {
-				prepareAuthenticationHeaders(request);
-			}
 			
 			String url = ROOT_URI + service.getResource();
 			request.setURI(new URI(url));		
