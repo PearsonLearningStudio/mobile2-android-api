@@ -43,6 +43,16 @@ public abstract class BaseService {
 		return true;
 	}
 	
+	protected long completedAt;
+	
+	public long getCompletedAt() {
+		return completedAt;
+	}
+
+	public void setCompletedAt(long completedAt) {
+		this.completedAt = completedAt;
+	}
+
 	private static final String CACHE_VERSION = "0"; //change to invalidate existing caches
 	
 	public String getCacheKey(String userInfo) {
