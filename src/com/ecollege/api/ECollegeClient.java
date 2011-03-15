@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.net.SocketException;
 import java.net.SocketTimeoutException;
 import java.net.URI;
+import java.util.Calendar;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -13,6 +14,7 @@ import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.params.HttpProtocolParams;
 
+import com.ecollege.api.ECollegeHttpResponseCache.CacheEntry;
 import com.ecollege.api.exceptions.DeserializationException;
 import com.ecollege.api.exceptions.ServiceException;
 import com.ecollege.api.exceptions.TimeoutException;
@@ -77,7 +79,11 @@ public class ECollegeClient {
 		
 		if (cache != null && service.isCacheable()) {
 			cacheKey = service.getCacheKey(grantToken == null ? "" : grantToken);
-			responseContent = cache.get(cacheKey);
+			CacheEntry cacheEntry = cache.get(cacheKey);
+			if (cacheEntry != null) {
+				responseContent = cacheEntry.data;
+				service.setCompletedAt(cacheEntry.cachedAt);
+			}
 		}			
 
 		if (responseContent == null) {
