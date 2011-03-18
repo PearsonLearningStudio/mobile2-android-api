@@ -3,6 +3,7 @@ package com.ecollege.api.services.discussions;
 import java.util.List;
 import java.util.logging.Logger;
 
+import com.ecollege.api.model.DiscussionTopic;
 import com.ecollege.api.model.UserDiscussionResponse;
 import com.ecollege.api.model.UserDiscussionTopic;
 import com.ecollege.api.services.BaseService;
@@ -24,7 +25,8 @@ public class FetchDiscussionResponsesForTopic extends BaseService {
 
 	@Override
 	public String getResource() {
-		return "/me/topics/" + topic.getId() + "/userresponses";
+		DiscussionTopic dt = topic.getTopic();
+		return "/me/topics/" + dt.getId() + "/userresponses";
 	}
 	
 	@Override
