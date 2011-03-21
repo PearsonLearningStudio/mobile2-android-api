@@ -57,10 +57,10 @@ public class ECollegeClient {
 	}
 	
 	public void executeService(BaseService service) throws Exception {
-		executeService(service,null);
+		executeService(service,null, false, false);
 	}
 	
-	public void executeService(BaseService service, ECollegeHttpResponseCache cache) throws Exception {		
+	public void executeService(BaseService service, ECollegeHttpResponseCache cache, boolean readFromCache, boolean writeToCache) throws Exception {		
 		String cacheKey = null;
 		String responseContent = null;
 		
@@ -77,7 +77,7 @@ public class ECollegeClient {
 			prepareAuthenticationHeaders(request);
 		}
 		
-		if (cache != null && service.isCacheable()) {
+		if (cache != null && service.isCacheable() && readFromCache) {
 			cacheKey = service.getCacheKey(grantToken == null ? "" : grantToken);
 			CacheEntry cacheEntry = cache.get(cacheKey);
 			if (cacheEntry != null) {
@@ -112,7 +112,7 @@ public class ECollegeClient {
 			}
 			
 			responseContent = response.getResponseContent();
-			if (cache != null && service.isCacheable()) {
+			if (cache != null && service.isCacheable() && writeToCache) {
 				cache.put(cacheKey, responseContent);
 			}
 		}
