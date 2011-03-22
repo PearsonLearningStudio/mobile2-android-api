@@ -113,6 +113,7 @@ public class ECollegeClient {
 			
 			responseContent = response.getResponseContent();
 			if (cache != null && service.isCacheable() && writeToCache) {
+				if (cacheKey == null) cacheKey = service.getCacheKey(grantToken == null ? "" : grantToken);
 				cache.put(cacheKey, responseContent);
 			}
 		}
