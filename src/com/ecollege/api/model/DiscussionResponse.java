@@ -11,6 +11,7 @@ public class DiscussionResponse implements Serializable {
 	private String description;
 	private User author;
 	private Calendar postedDate;
+	private String rawDescription;
 	
 	public long getId() {
 		return id;
@@ -29,6 +30,15 @@ public class DiscussionResponse implements Serializable {
 	}
 	public void setDescription(String description) {
 		this.description = description;
+		rawDescription = null;
+	}
+	public String getRawDescription() {
+		// memoize to avoid extra processing
+		if (rawDescription == null) {
+			// remove tags (naively for now) and beginning and ending whitespace
+			rawDescription = description.replaceAll("<[^>]+>", "").trim();
+		}
+		return rawDescription;
 	}
 	public User getAuthor() {
 		return author;

@@ -10,6 +10,7 @@ public class DiscussionTopic implements Serializable {
 	private String description;
 	private long orderNumber;
 	private ContainerInfo containerInfo;
+	private String rawDescription;
 	
 	public long getId() {
 		return id;
@@ -28,6 +29,7 @@ public class DiscussionTopic implements Serializable {
 	}
 	public void setDescription(String description) {
 		this.description = description;
+		rawDescription = null;
 	}
 	public long getOrderNumber() {
 		return orderNumber;
@@ -40,6 +42,14 @@ public class DiscussionTopic implements Serializable {
 	}
 	public void setContainerInfo(ContainerInfo containerInfo) {
 		this.containerInfo = containerInfo;
+	}
+	public String getRawDescription() {
+		// memoize to avoid extra processing
+		if (rawDescription == null) {
+			// remove tags (naively for now) and beginning and ending whitespace
+			rawDescription = description.replaceAll("<[^>]+>", "").trim();
+		}
+		return rawDescription;
 	}
 	
 }
