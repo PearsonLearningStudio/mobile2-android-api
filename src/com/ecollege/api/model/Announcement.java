@@ -12,6 +12,7 @@ public class Announcement implements Serializable {
 	private String submitter;
 	private Calendar startDisplayDate;
 	private Calendar endDisplayDate;
+	private String rawText;
 	public void setId(long id) {
 		this.id = id;
 	}
@@ -29,6 +30,14 @@ public class Announcement implements Serializable {
 	}
 	public String getText() {
 		return text;
+	}
+	public String getRawText() {
+		// memoize to avoid extra processing
+		if (rawText == null) {
+			// remove tags (naively for now) and beginning and ending whitespace
+			rawText = text.replaceAll("<[^>]+>", "").trim();
+		}
+		return rawText;
 	}
 	public void setSubmitter(String submitter) {
 		this.submitter = submitter;
