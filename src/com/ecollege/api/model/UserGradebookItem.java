@@ -10,7 +10,7 @@ public class UserGradebookItem implements Serializable {
 
 	private String id;
 	private GradebookItem gradebookItem;
-	private List<GradeLink> gradeLinks;
+	private List<GradeLink> links;
 	public void setId(String id) {
 		this.id = id;
 	}
@@ -24,9 +24,15 @@ public class UserGradebookItem implements Serializable {
 		return gradebookItem;
 	}
 	
+	public List<GradeLink> getLinks() {
+		return links;
+	}
+	public void setLinks(List<GradeLink> links) {
+		this.links = links;
+	}
 	public Grade getGrade() {
-		if (null != gradeLinks && gradeLinks.size() > 0) {
-			GradeLink link = gradeLinks.get(0);
+		if (null != links && links.size() > 0) {
+			GradeLink link = links.get(0);
 			return link.getGrade();
 		}
 		return null;
