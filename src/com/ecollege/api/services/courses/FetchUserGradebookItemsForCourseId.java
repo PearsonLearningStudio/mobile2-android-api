@@ -5,13 +5,13 @@ import java.util.List;
 import com.ecollege.api.model.UserGradebookItem;
 import com.ecollege.api.services.BaseService;
 
-public class FetchGradebookItemsForCourseId extends BaseService {
+public class FetchUserGradebookItemsForCourseId extends BaseService {
 
 	private long courseId;
 	private boolean includeGrades;
 	private List<UserGradebookItem> result;
 
-	public FetchGradebookItemsForCourseId(long courseId, boolean includeGrades) {
+	public FetchUserGradebookItemsForCourseId(long courseId, boolean includeGrades) {
 		this.courseId = courseId;
 		this.includeGrades = includeGrades;
 	}
@@ -28,7 +28,7 @@ public class FetchGradebookItemsForCourseId extends BaseService {
 	@Override
 	public void processResponse(String responseContent) {
 		super.processResponse(responseContent);
-		result = parseContentAsJsonArray(responseContent, UserGradebookItem.class);
+		result = parseContentAsJsonArray(responseContent, "userGradebookItems", UserGradebookItem.class);
 	}
 
 	public List<UserGradebookItem> getResult() {
