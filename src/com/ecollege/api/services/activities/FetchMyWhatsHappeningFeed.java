@@ -31,9 +31,12 @@ public class FetchMyWhatsHappeningFeed extends BaseService {
 	public String getResource() {
 		String result = "/me/whatshappeningfeed"; 
 		
+		//result += "?types=thread-topic,thread-post,grade,dropbox-submission";
+        result += "?types=dropbox-submission";
+        
 		if (since != null) {
 			SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
-			result += "?since=" + sdf.format(since.getTime());
+			result += "&since=" + sdf.format(since.getTime());
 		}
 		
 		return result; 

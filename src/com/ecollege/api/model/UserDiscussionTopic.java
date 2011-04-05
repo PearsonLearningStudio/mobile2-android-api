@@ -28,4 +28,13 @@ public class UserDiscussionTopic implements Serializable {
 		this.childResponseCounts = childResponseCounts;
 	}
 
+	public boolean isActive() {
+		ResponseCount rc = getChildResponseCounts();
+		if (rc != null) {
+			if (rc.getLast24HourResponseCount() > 0 || rc.getUnreadResponseCount() > 0) {
+				return true;
+			}
+		}
+		return false;
+	}
 }
