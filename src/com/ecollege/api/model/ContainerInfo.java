@@ -2,6 +2,8 @@ package com.ecollege.api.model;
 
 import java.io.Serializable;
 
+import org.codehaus.jackson.annotate.JsonProperty;
+
 @SuppressWarnings("serial")
 public class ContainerInfo implements Serializable {
 	
@@ -11,6 +13,8 @@ public class ContainerInfo implements Serializable {
 	private String unitTitle;
 	private long unitNumber;
 	private String unitHeader;
+	
+	@JsonProperty("courseID")
 	private long courseId;
 	private String courseTitle;
 	

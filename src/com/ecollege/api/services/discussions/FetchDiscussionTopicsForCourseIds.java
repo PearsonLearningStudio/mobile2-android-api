@@ -1,5 +1,6 @@
 package com.ecollege.api.services.discussions;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -10,9 +11,13 @@ public class FetchDiscussionTopicsForCourseIds extends BaseService {
 
 	private static Logger l = Logger.getLogger(FetchDiscussionTopicsForCourseIds.class.getName());
 	private List<String> courseIds;
-	
+
 	public FetchDiscussionTopicsForCourseIds(List<String> courseIds) {
 		this.courseIds = courseIds;
+	}
+
+	public FetchDiscussionTopicsForCourseIds(long courseId) {
+		this.courseIds = Arrays.asList(courseId + "");
 	}
 	
 	private List<UserDiscussionTopic> result;
