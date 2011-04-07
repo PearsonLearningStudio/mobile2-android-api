@@ -120,7 +120,7 @@ public class ECollegeClient {
 		
 		try {
 			service.processResponse(responseContent);
-			service.setCompletedAt(Calendar.getInstance().getTimeInMillis());
+			if (service.getCompletedAt() <= 0) service.setCompletedAt(Calendar.getInstance().getTimeInMillis());
 		} catch (Exception e) {
 			throw new DeserializationException(e);
 		}
