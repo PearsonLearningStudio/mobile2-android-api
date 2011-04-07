@@ -5,6 +5,9 @@ import java.io.Serializable;
 @SuppressWarnings("serial")
 public class RosterUser implements Serializable,Comparable<RosterUser> {
 
+	public static final String ROLE_CODE_INSTRUCTOR = "Instructor";
+	public static final String ROLE_CODE_STUDENT = "Student";
+	
     private long id;
     private String roleType;
     private String firstName;
@@ -51,6 +54,10 @@ public class RosterUser implements Serializable,Comparable<RosterUser> {
 			return lastName.substring(0,1).toUpperCase();
 		}
 		return "?";
+	}
+	
+	public String getRoleCode() {
+		return getFriendlyRole(); //if internationalized, make sure this returns the constants at top
 	}
 	
 	public String getFriendlyRole() {
