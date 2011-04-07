@@ -59,4 +59,8 @@ public class User implements Serializable {
     public String getClientString() {
         return clientString;
     }
+    
+    public String getDisplayName() {
+    	return firstName + " " + lastName;
+    }
 }
