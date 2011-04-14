@@ -4,7 +4,7 @@ package com.ecollege.api;
 public interface ECollegeHttpResponseCache {
 
 	/**
-	 * FileCacheEntry is an object which contains cached data and metadata about it
+	 * CacheEntry is an object which contains cached data and metadata about it
 	 *  
 	 */
 	
@@ -21,5 +21,6 @@ public interface ECollegeHttpResponseCache {
 
 	public CacheEntry get(String cacheKey);
 	public void put(String cacheKey, String responseContent);
+	public Integer removeInvalidEntries();
 
 }
