@@ -20,6 +20,7 @@ public interface ECollegeHttpResponseCache {
 	}
 
 	public CacheEntry get(String cacheScope, String cacheKey);
+	public CacheEntry getIfNewerThan(String cacheScope, String cacheKey, long maxMillisOld);
 	public void put(String cacheScope, String cacheKey, String responseContent);
 	public void invalidateCacheScope(String cacheScope);
 	public void invalidateCacheKey(String cacheScope, String cacheKey);
