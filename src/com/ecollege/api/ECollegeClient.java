@@ -79,7 +79,7 @@ public class ECollegeClient {
 		
 		if (cache != null && service.isCacheable() && readFromCache) {
 			cacheKey = service.getCacheKey(grantToken == null ? "" : grantToken);
-			CacheEntry cacheEntry = cache.get(cacheKey);
+			CacheEntry cacheEntry = cache.get(service.getCacheScope(), cacheKey);
 			if (cacheEntry != null) {
 				responseContent = cacheEntry.data;
 				service.setCompletedAt(cacheEntry.cachedAt);
@@ -114,7 +114,7 @@ public class ECollegeClient {
 			responseContent = response.getResponseContent();
 			if (cache != null && service.isCacheable() && writeToCache) {
 				if (cacheKey == null) cacheKey = service.getCacheKey(grantToken == null ? "" : grantToken);
-				cache.put(cacheKey, responseContent);
+				cache.put(service.getCacheScope(), cacheKey, responseContent);
 			}
 		}
 		

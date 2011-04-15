@@ -69,6 +69,10 @@ public abstract class BaseService {
 		}
 	}
 	
+	public String getCacheScope() {
+		return getClass().getName();
+	}
+	
 	// end settings
 	
 	

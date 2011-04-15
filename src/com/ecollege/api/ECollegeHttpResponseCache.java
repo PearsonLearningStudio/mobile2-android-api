@@ -19,8 +19,10 @@ public interface ECollegeHttpResponseCache {
 		}
 	}
 
-	public CacheEntry get(String cacheKey);
-	public void put(String cacheKey, String responseContent);
+	public CacheEntry get(String cacheScope, String cacheKey);
+	public void put(String cacheScope, String cacheKey, String responseContent);
+	public void invalidateCacheScope(String cacheScope);
+	public void invalidateCacheKey(String cacheScope, String cacheKey);
 	public Integer removeInvalidEntries();
 
 }
