@@ -47,7 +47,7 @@ public class DiscussionTopic implements Serializable {
 		// memoize to avoid extra processing
 		if (rawDescription == null) {
 			// remove tags (naively for now) and beginning and ending whitespace
-			rawDescription = description.replaceAll("<[^>]+>", "").trim();
+			rawDescription = description.replaceAll("<[^>]+>", "").replaceAll("&nbsp;", "").trim();
 		}
 		return rawDescription;
 	}
