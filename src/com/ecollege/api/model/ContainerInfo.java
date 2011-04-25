@@ -7,6 +7,7 @@ import org.codehaus.jackson.annotate.JsonProperty;
 @SuppressWarnings("serial")
 public class ContainerInfo implements Serializable {
 	
+	@JsonProperty("contentItemID")
 	private long contentItemId;
 	private String contentItemTitle;
 	private long contentItemOrderNumber;
